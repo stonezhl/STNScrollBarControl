@@ -14,6 +14,4 @@ FOUNDATION_EXPORT double STNScrollBarControlVersionNumber;
 //! Project version string for STNScrollBarControl.
 FOUNDATION_EXPORT const unsigned char STNScrollBarControlVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <STNScrollBarControl/PublicHeader.h>
-
-
+#import <STNScrollBarControl/STNScrollBar.h>
