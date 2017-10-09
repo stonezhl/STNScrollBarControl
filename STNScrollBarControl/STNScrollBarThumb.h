@@ -9,6 +9,5 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface STNScrollBarThumb : CAShapeLayer
-+ (instancetype)scrollBarThumb;
 - (BOOL)setOriginY:(CGFloat)y;
 @end

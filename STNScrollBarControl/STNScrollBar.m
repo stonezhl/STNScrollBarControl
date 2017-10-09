@@ -33,7 +33,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
     if (self) {
         self.backgroundColor = [UIColor redColor];
         
-        _thumb = [STNScrollBarThumb scrollBarThumb];
+        _thumb = [STNScrollBarThumb layer];
         [self.layer addSublayer:_thumb];
     }
     return self;
@@ -54,7 +54,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
                             kSTNScrollBarWidth,
                             _scrollView.stn_height);
     
-    [self updateThumbPosition];
+    [self updateThumbPositionByScrollView];
 }
 
 - (void)viewDidDisappear {
@@ -98,7 +98,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
     self.hidden = NO;
     self.alpha = 0;
     CGRect toFrame = self.frame;
-    toFrame.origin.x = CGRectGetWidth(self.scrollView.frame) - CGRectGetWidth(self.frame);
+    toFrame.origin.x = CGRectGetWidth(_scrollView.frame) - CGRectGetWidth(self.frame);
     [UIView animateWithDuration:kSTNScrollBarAnimationInterval
                      animations:^{
                          self.frame = toFrame;
@@ -117,7 +117,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
 
 - (void)hideWithAnimationOnTimer {
     CGRect toFrame = self.frame;
-    toFrame.origin.x = CGRectGetWidth(self.scrollView.frame);
+    toFrame.origin.x = CGRectGetWidth(_scrollView.frame);
     [UIView animateWithDuration:kSTNScrollBarAnimationInterval
                      animations:^{
                          self.frame = toFrame;
@@ -135,12 +135,65 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
     }
 }
 
+#pragma mark - Touch Event
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    return CGRectContainsPoint(self.thumb.frame, point);
+}
+
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    CGPoint point = [touch locationInView:self];
+    if (CGRectContainsPoint(self.thumb.frame, point)) {
+        // stop scrollview scrolling
+        [self updateScrollViewContentOffset];
+        [self cancelHideWithDelay];
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    [self updateThumbPositionByTouch:touch];
+    return YES;
+}
+
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    [self updateThumbPositionByTouch:touch];
+    [self hideWithDelay];
+}
+
+- (void)updateScrollViewContentOffset {
+    CGPoint offset = _scrollView.contentOffset;
+    offset.y = (_scrollView.contentSize.height - CGRectGetHeight(self.frame)) * [self thumbOffsetRatio] - _scrollView.stn_contentInsetTop;
+    [_scrollView setContentOffset:offset animated:NO];
+}
+
 #pragma mark - Thumb
 
-- (void)updateThumbPosition {
+- (void)updateThumbPositionByScrollView {
+    if (self.isTracking) {
+        // Thumb is being tracked by touch now
+        return;
+    }
+    
     CGFloat y = (CGRectGetHeight(self.frame) - CGRectGetHeight(self.thumb.bounds)) * _scrollView.stn_didScrollRatio;
     y = MIN(MAX(y, 0), CGRectGetHeight(self.frame) - CGRectGetHeight(self.thumb.bounds));
     [self.thumb setOriginY: y];
+}
+
+- (void)updateThumbPositionByTouch:(UITouch *)touch {
+    CGFloat y = [touch locationInView:self].y - CGRectGetHeight(self.thumb.bounds) * 0.5;
+    y = MIN(MAX(y, 0), (CGRectGetHeight(self.frame) - CGRectGetHeight(self.thumb.bounds)));
+    BOOL updatedThumbPosition = [self.thumb setOriginY:y];
+    
+    if (updatedThumbPosition) {
+        [self updateScrollViewContentOffset];
+    }
+}
+
+- (CGFloat)thumbOffsetRatio {
+    return CGRectGetMinY(self.thumb.frame) / (CGRectGetHeight(self.frame) - CGRectGetHeight(self.thumb.bounds));
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -154,7 +207,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
 }
 
 - (void)scrollViewDidScroll {
-    [self updateThumbPosition];
+    [self updateThumbPositionByScrollView];
 }
 
 - (void)scrollViewDidEndDraggingAndWillDecelerate:(BOOL)decelerate {

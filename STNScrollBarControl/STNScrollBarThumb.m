@@ -14,18 +14,14 @@ static const CGFloat kSTNScrollBarThumbDiameter = 40.0;
 
 @implementation STNScrollBarThumb
 
-+ (instancetype)scrollBarThumb {
-    return [[STNScrollBarThumb alloc] initScrollBarThumb];
-}
-
-- (instancetype)initScrollBarThumb {
+- (instancetype)init {
     self = [super init];
     if (self) {
         self.frame = CGRectMake(0, 0, kSTNScrollBarThumbDiameter, kSTNScrollBarThumbDiameter);
         self.borderWidth = 0.1;
         self.borderColor = [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25] CGColor];
         self.backgroundColor = [[UIColor whiteColor] CGColor];
-        self.cornerRadius = kSTNScrollBarThumbDiameter / 2.0;
+        self.cornerRadius = kSTNScrollBarThumbDiameter * 0.5;
         
         // shadow style
         self.shadowOpacity = 1.0;
