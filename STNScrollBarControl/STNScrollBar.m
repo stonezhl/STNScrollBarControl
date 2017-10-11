@@ -71,7 +71,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
     [_scrollView removeObserver:self forKeyPath:kSTNScrollViewContentInsetKeyPath];
 }
 
-- (void)setScrollView:(UITableView *)scrollView {
+- (void)setScrollView:(UIScrollView *)scrollView {
     NSLog(@"[ℹ️]: setScrollView");
     
     [_scrollView removeObserver:self forKeyPath:kSTNScrollViewContentInsetKeyPath];
@@ -231,7 +231,14 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
 
 - (NSIndexPath *)indexPathForVisibleItem {
     NSArray<NSIndexPath *> *indexPaths;
-    indexPaths = [(UITableView *)_scrollView indexPathsForVisibleRows];
+    if ([_scrollView isKindOfClass:[UITableView class]]) {
+        indexPaths = [(UITableView *)self.scrollView indexPathsForVisibleRows];
+    } else if ([_scrollView isKindOfClass:[UICollectionView class]]) {
+        indexPaths = [(UICollectionView *)self.scrollView indexPathsForVisibleItems];
+        indexPaths = [indexPaths sortedArrayUsingComparator:^NSComparisonResult(NSIndexPath *idx1, NSIndexPath *idx2) {
+            return [idx1 compare:idx2];
+        }];
+    }
     CGFloat ratio = [self thumbOffsetRatio];
     NSInteger idx = MIN(indexPaths.count - 1, MAX(0, floor(indexPaths.count * ratio)));
     return indexPaths[idx];
