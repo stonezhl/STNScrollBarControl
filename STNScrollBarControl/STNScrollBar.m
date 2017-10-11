@@ -8,6 +8,7 @@
 
 #import "STNScrollBar.h"
 #import "STNScrollBarThumb.h"
+#import "STNScrollBarText.h"
 #import "UIScrollView+STNScrollBar.h"
 
 static const CGFloat kSTNScrollBarWidth = 30.0;
@@ -19,6 +20,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
 
 @interface STNScrollBar ()
 @property (strong, nonatomic) STNScrollBarThumb *thumb;
+@property (strong, nonatomic) STNScrollBarText *text;
 @property (weak, nonatomic) NSTimer *hideAnimationTimer;
 @end
 
@@ -35,6 +37,10 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
         
         _thumb = [STNScrollBarThumb layer];
         [self.layer addSublayer:_thumb];
+        
+        _text = [STNScrollBarText layer];
+        _text.hidden = YES;
+        [_thumb addSublayer:_text];
     }
     return self;
 }
@@ -95,6 +101,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
         return;
     }
     
+    self.text.hidden = YES;
     self.hidden = NO;
     self.alpha = 0;
     CGRect toFrame = self.frame;
@@ -126,6 +133,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
                      completion:^(BOOL finished) {
                          self.hidden = YES;
                          self.alpha = 1;
+                         self.text.hidden = YES;
                      }];
 }
 
@@ -146,6 +154,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
     if (CGRectContainsPoint(self.thumb.frame, point)) {
         // stop scrollview scrolling
         [self updateScrollViewContentOffset];
+        [self showText];
         [self cancelHideWithDelay];
         return YES;
     }
@@ -189,11 +198,52 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
     
     if (updatedThumbPosition) {
         [self updateScrollViewContentOffset];
+        if (self.delegate) {
+            [self updateScrollBarText];
+        }
     }
 }
 
 - (CGFloat)thumbOffsetRatio {
     return CGRectGetMinY(self.thumb.frame) / (CGRectGetHeight(self.frame) - CGRectGetHeight(self.thumb.bounds));
+}
+
+#pragma mark - Text
+
+- (void)showText {
+    if (self.delegate) {
+        [self updateScrollBarText];
+        [self.text fadeInText];
+    }
+}
+
+- (void)hideText {
+    if (self.delegate) {
+        [self.text fadeOutText];
+    }
+}
+
+- (void)updateScrollBarText {
+    NSIndexPath *indexPath = [self indexPathForVisibleItem];
+    NSString *itemString = [self itemStringAtIndexPath:indexPath];
+    [self.text updateTextWithItemString:itemString];
+}
+
+- (NSIndexPath *)indexPathForVisibleItem {
+    NSArray<NSIndexPath *> *indexPaths;
+    indexPaths = [(UITableView *)_scrollView indexPathsForVisibleRows];
+    CGFloat ratio = [self thumbOffsetRatio];
+    NSInteger idx = MIN(indexPaths.count - 1, MAX(0, floor(indexPaths.count * ratio)));
+    return indexPaths[idx];
+}
+
+#pragma mark - STNScrollBarDelegate
+
+- (NSString *)itemStringAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.delegate respondsToSelector:@selector(scrollBar:itemStringAtIndexPath:)]) {
+        return [self.delegate scrollBar:self itemStringAtIndexPath:indexPath];
+    }
+    return nil;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -203,6 +253,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
         [self show];
     } else {
         [self cancelHideWithDelay];
+        [self hideText];
     }
 }
 

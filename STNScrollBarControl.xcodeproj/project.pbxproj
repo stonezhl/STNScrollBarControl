@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		25039E841F8A382500FFD718 /* STNScrollBarText.h in Headers */ = {isa = PBXBuildFile; fileRef = 25039E821F8A382500FFD718 /* STNScrollBarText.h */; };
+		25039E851F8A382500FFD718 /* STNScrollBarText.m in Sources */ = {isa = PBXBuildFile; fileRef = 25039E831F8A382500FFD718 /* STNScrollBarText.m */; };
 		25763E6C1F76A8CA00C93DBF /* STNScrollBarThumb.h in Headers */ = {isa = PBXBuildFile; fileRef = 25763E6A1F76A8CA00C93DBF /* STNScrollBarThumb.h */; };
 		25763E6D1F76A8CA00C93DBF /* STNScrollBarThumb.m in Sources */ = {isa = PBXBuildFile; fileRef = 25763E6B1F76A8CA00C93DBF /* STNScrollBarThumb.m */; };
 		25763E701F76A9AD00C93DBF /* CATransaction+STNScrollBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 25763E6E1F76A9AD00C93DBF /* CATransaction+STNScrollBar.h */; };
@@ -31,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		25039E821F8A382500FFD718 /* STNScrollBarText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STNScrollBarText.h; sourceTree = "<group>"; };
+		25039E831F8A382500FFD718 /* STNScrollBarText.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STNScrollBarText.m; sourceTree = "<group>"; };
 		25763E6A1F76A8CA00C93DBF /* STNScrollBarThumb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STNScrollBarThumb.h; sourceTree = "<group>"; };
 		25763E6B1F76A8CA00C93DBF /* STNScrollBarThumb.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STNScrollBarThumb.m; sourceTree = "<group>"; };
 		25763E6E1F76A9AD00C93DBF /* CATransaction+STNScrollBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CATransaction+STNScrollBar.h"; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 				25A1BCD51F7660C200E1DA92 /* STNScrollBar.m */,
 				25763E6A1F76A8CA00C93DBF /* STNScrollBarThumb.h */,
 				25763E6B1F76A8CA00C93DBF /* STNScrollBarThumb.m */,
+				25039E821F8A382500FFD718 /* STNScrollBarText.h */,
+				25039E831F8A382500FFD718 /* STNScrollBarText.m */,
 				25763E6E1F76A9AD00C93DBF /* CATransaction+STNScrollBar.h */,
 				25763E6F1F76A9AD00C93DBF /* CATransaction+STNScrollBar.m */,
 				25763E721F76AB3200C93DBF /* UIScrollView+STNScrollBar.h */,
@@ -119,6 +125,7 @@
 			files = (
 				25763E741F76AB3200C93DBF /* UIScrollView+STNScrollBar.h in Headers */,
 				25763E701F76A9AD00C93DBF /* CATransaction+STNScrollBar.h in Headers */,
+				25039E841F8A382500FFD718 /* STNScrollBarText.h in Headers */,
 				25A1BCBD1F765F9200E1DA92 /* STNScrollBarControl.h in Headers */,
 				25763E6C1F76A8CA00C93DBF /* STNScrollBarThumb.h in Headers */,
 				25A1BCD61F7660C200E1DA92 /* STNScrollBar.h in Headers */,
@@ -226,6 +233,7 @@
 				25A1BCD71F7660C200E1DA92 /* STNScrollBar.m in Sources */,
 				25763E711F76A9AD00C93DBF /* CATransaction+STNScrollBar.m in Sources */,
 				25763E751F76AB3200C93DBF /* UIScrollView+STNScrollBar.m in Sources */,
+				25039E851F8A382500FFD718 /* STNScrollBarText.m in Sources */,
 				25763E6D1F76A8CA00C93DBF /* STNScrollBarThumb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

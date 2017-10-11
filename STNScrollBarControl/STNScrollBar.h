@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class STNScrollBar;
+@protocol STNScrollBarDelegate <NSObject>
+@optional
+- (NSString *)scrollBar:(STNScrollBar *)scrollBar itemStringAtIndexPath:(NSIndexPath *)indexPath;
+@end
+
 @interface STNScrollBar : UIControl
 @property (weak, nonatomic) UITableView *scrollView;
+@property (weak, nonatomic) id<STNScrollBarDelegate>delegate;
 + (instancetype)scrollBar;
 - (void)viewDidDisappear;
 // UIScrollViewDelegate
