@@ -33,7 +33,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
 - (instancetype)initScrollBar {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor redColor];
+        self.backgroundColor = [UIColor clearColor];
         
         _thumb = [STNScrollBarThumb layer];
         [self.layer addSublayer:_thumb];
@@ -47,8 +47,6 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
-    NSLog(@"[ℹ️]: layoutSubviews");
     
     if (self.hideAnimationTimer) {
         [self.hideAnimationTimer invalidate];
@@ -72,8 +70,6 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
 }
 
 - (void)setScrollView:(UIScrollView *)scrollView {
-    NSLog(@"[ℹ️]: setScrollView");
-    
     [_scrollView removeObserver:self forKeyPath:kSTNScrollViewContentInsetKeyPath];
     _scrollView = scrollView;
     _scrollView.showsVerticalScrollIndicator = NO;
@@ -88,7 +84,7 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
     }
     
     if ([keyPath isEqualToString:kSTNScrollViewContentInsetKeyPath]) {
-        NSLog(@"[😱]: kSTNScrollViewFrameKeyPath");
+        
     }
     
     [self setNeedsLayout];
