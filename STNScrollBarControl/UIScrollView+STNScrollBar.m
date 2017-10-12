@@ -12,17 +12,21 @@
 
 - (CGFloat)stn_contentInsetTop {
     CGFloat top = self.contentInset.top;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 110000
     if (@available(iOS 11, *)) {
         top += self.adjustedContentInset.top;
     }
+#endif
     return top;
 }
 
 - (CGFloat)stn_contentInsetBottom {
     CGFloat bottom = self.contentInset.bottom;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 110000
     if (@available(iOS 11, *)) {
         bottom += self.adjustedContentInset.bottom;
     }
+#endif
     return bottom;
 }
 
