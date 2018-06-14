@@ -26,7 +26,8 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
 
 @implementation STNScrollBar
 
-+ (instancetype)scrollBar {
++ (instancetype)init
+{
     return [[STNScrollBar alloc] initScrollBar];
 }
 
@@ -185,6 +186,8 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
     CGFloat y = (CGRectGetHeight(self.frame) - CGRectGetHeight(self.thumb.bounds)) * _scrollView.stn_didScrollRatio;
     y = MIN(MAX(y, 0), CGRectGetHeight(self.frame) - CGRectGetHeight(self.thumb.bounds));
     [self.thumb setOriginY: y];
+    
+    NSLog(@"%f", self.thumb.frame.origin.y);
 }
 
 - (void)updateThumbPositionByTouch:(UITouch *)touch {

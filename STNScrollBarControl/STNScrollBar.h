@@ -17,7 +17,7 @@
 @interface STNScrollBar : UIControl
 @property (weak, nonatomic) UIScrollView *scrollView;
 @property (weak, nonatomic) id<STNScrollBarDelegate>delegate;
-+ (instancetype)scrollBar;
++ (instancetype)init;
 - (void)viewDidDisappear;
 // UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging;
