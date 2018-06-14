@@ -26,7 +26,8 @@ static NSString * const kSTNScrollViewContentInsetKeyPath = @"contentInset";
 
 @implementation STNScrollBar
 
-+ (instancetype)scrollBar {
++ (instancetype)init
+{
     return [[STNScrollBar alloc] initScrollBar];
 }
 
